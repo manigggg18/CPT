@@ -4,7 +4,7 @@ plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
 title: "Code Crunch"
 description: "Beat the clock, think fast, score high. Match the logos to score a point most points get the highest score on the leaderboard."
-gitorg: "https://github.com/sreejagangapuram/Code-Crunch"
+gitorg: "https://github.com/manigggg18/CPT"
 description: "Beat the clock, think fast, score high. Match the logos to score a point most points get the highest score on the leaderboard."
 google_analytics:
 # markdown: CommonMarkGhPages
