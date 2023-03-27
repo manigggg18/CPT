@@ -341,7 +341,7 @@ img {
       document.getElementById("close-game").style.display = "none";
   }
 
-var possibleCardSides = ["{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png", "{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png"];
+var possibleCardSides = ["fa-solid fa-shield-halved", "images/dc.png", "images/fp.png", "images/gh.png", "images/html.png", "images/p.png", "images/so.png", "images/vs.png", "fa-solid fa-shield-halved", "images/dc.png", "images/fp.png", "images/gh.png", "images/html.png", "images/p.png", "images/so.png", "images/vs.png"];
 var flippedCards = [];
 var matchedCards = [];
 var locked = false;
@@ -358,9 +358,9 @@ return side;
 }
 function assignCardSides($cardSides) {
 for (var i = 0; i < 16; i++) {
-  $($cardSides[i]).html('<img src="' + getRandomSide() + '">');
+  $($cardSides[i]).html('<i class="' + getRandomSide() + '" style="color: #ffffff;"></i>');
 }
-possibleCardSides = ["{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png", "{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png"];
+possibleCardSides = ["fa-solid fa-shield-halved", "images/dc.png", "images/fp.png", "images/gh.png", "images/html.png", "images/p.png", "images/so.png", "images/vs.png", "fa-solid fa-shield-halved", "images/dc.png", "images/fp.png", "images/gh.png", "images/html.png", "images/p.png", "images/so.png", "images/vs.png"];
 }
 function unFlipped($card) {
 return !$card.hasClass("flipped");
