@@ -342,6 +342,17 @@ img {
       document.getElementById("close-game").style.display = "none";
   }
 
+const colors = ['#FF5733', '#FFC300', '#DAF7A6', '#C70039', '#581845', '#900C3F', '#3D9970', '#FF4136', '#F012BE', '#85144b', '#FF851B', '#B10DC9', '#2ECC40', '#0074D9', '#7FDBFF', '#01FF70'];
+
+// Loop through each flip card
+const flipCards = document.querySelectorAll('.flip-card');
+flipCards.forEach(flipCard => {
+  // Select the backside element of the flip card
+  const backside = flipCard.querySelector('.flip-card-back');
+  // Randomly select a color from the colors array and apply it to the backside element
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  backside.style.backgroundColor = randomColor;
+});
 var possibleCardSides = ["{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png", "{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png"];
 var flippedCards = [];
 var matchedCards = [];
