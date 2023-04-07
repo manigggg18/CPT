@@ -125,7 +125,7 @@
 .flip-card .flip-card-back {
   width: 100px;
   height: 100px;
-  background-color: white;
+  background-color: #800000;
   transform: rotateY(180deg);
   border-radius: 6px;
 }
@@ -139,7 +139,8 @@
   margin: 21px
 }
 img {
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
 }    
 .frozen {
   pointer-events: none;
@@ -341,7 +342,7 @@ img {
       document.getElementById("close-game").style.display = "none";
   }
 
-var possibleCardSides = ["{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png", "{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png"];
+var possibleCardSides = ["{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png", "{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png"];
 var flippedCards = [];
 var matchedCards = [];
 var locked = false;
@@ -360,7 +361,7 @@ function assignCardSides($cardSides) {
 for (var i = 0; i < 16; i++) {
   $($cardSides[i]).html('<img src="' + getRandomSide() + '">');
 }
-possibleCardSides = ["{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png", "{{site.baseurl}}/images/aw.png", "{{site.baseurl}}/images/dc.png", "{{site.baseurl}}/images/fp.png", "{{site.baseurl}}/images/gh.png", "{{site.baseurl}}/images/html.png", "{{site.baseurl}}/images/p.png", "{{site.baseurl}}/images/so.png", "{{site.baseurl}}/images/vs.png"];
+possibleCardSides = ["{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png", "{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png"];
 }
 function unFlipped($card) {
 return !$card.hasClass("flipped");
