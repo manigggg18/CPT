@@ -41,11 +41,11 @@
 
   #game-container{
       position: relative !important;
-      background-color: #20ff32;
+      background-color: #000000;
       text-align: center;
       width: 480px;
       height: 480px;
-      border-radius: 1em;
+      border-radius: 20px;
       margin: auto;
       display: none;
   }
@@ -112,14 +112,14 @@
   width: 100px;
   height: 100px;
   background-color: #ff0000;
-  border-radius: 6px;
+  border-radius: 20px;
 }
 .flip-card .flip-card-back {
   width: 100px;
   height: 100px;
   background-color: #f1dd00;
   transform: rotateY(180deg);
-  border-radius: 6px;
+  border-radius: 20px;
 }
 .flip-card.flipped {
   transform: rotateY(180deg);
