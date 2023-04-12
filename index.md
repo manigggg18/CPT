@@ -23,7 +23,7 @@
   }
 
   #howto-button{
-      background-color: #FCC05F;
+      background-color: #f1dd00;
       color: rgb(43, 41, 41);
       
   }
@@ -41,7 +41,7 @@
 
   #game-container{
       position: relative !important;
-      background-color: #e5b76d;
+      background-color: #20ff32;
       text-align: center;
       width: 480px;
       height: 480px;
@@ -67,14 +67,6 @@
   height: 80px;
   border-radius: 40px;
   background-color: #90fff0;
-  color: #000000;
-  box-shadow: 0 0 0em;
-}
-.bar-2{
-  width: 150px;
-  height: 80px;
-  border-radius: 40px;
-  background-color: #ffe100;
   color: #000000;
   box-shadow: 0 0 0em;
 }
@@ -119,13 +111,13 @@
 .flip-card .flip-card-front {
   width: 100px;
   height: 100px;
-  background-color: #800000;
+  background-color: #ff0000;
   border-radius: 6px;
 }
 .flip-card .flip-card-back {
   width: 100px;
   height: 100px;
-  background-color: #800000;
+  background-color: #f1dd00;
   transform: rotateY(180deg);
   border-radius: 6px;
 }
@@ -239,7 +231,6 @@ img {
     </div>
   </div>
   <br><div id="game-container">
-      <!-- game goes here-->
       <section id="canvas" class="hidden">
       <div id='progressbar'></div>
       <div id="game">
@@ -313,6 +304,7 @@ img {
   </div><br>
 </div>
 <script>
+// buttons
   var howtobutton = document.getElementById("howto-button");
   var closing = document.getElementById("closing-gamestart");
   var playbutton = document.getElementById("play-button");
@@ -342,17 +334,7 @@ img {
       document.getElementById("close-game").style.display = "none";
   }
 
-const colors = ['#FF5733', '#FFC300', '#DAF7A6', '#C70039', '#581845', '#900C3F', '#3D9970', '#FF4136', '#F012BE', '#85144b', '#FF851B', '#B10DC9', '#2ECC40', '#0074D9', '#7FDBFF', '#01FF70'];
-
-// Loop through each flip card
-const flipCards = document.querySelectorAll('.flip-card');
-flipCards.forEach(flipCard => {
-  // Select the backside element of the flip card
-  const backside = flipCard.querySelector('.flip-card-back');
-  // Randomly select a color from the colors array and apply it to the backside element
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-  backside.style.backgroundColor = randomColor;
-});
+// define variables, assign random images
 var possibleCardSides = ["{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png", "{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png"];
 var flippedCards = [];
 var matchedCards = [];
@@ -398,9 +380,9 @@ var $canvas = $("#canvas");
 var $flipCardElements = $(".flip-card");
 var $cardSides = $(".flip-card .flip-card-back");
 var $replay = $("#close-game");
-var $matchCountDisplay = $("#match-count"); // added a display element to show the match count
-var matchCounter = 0; // added a counter for matched cards
-var totalCards = $flipCardElements.length; // added a variable to store the total number of cards
+var $matchCountDisplay = $("#match-count"); 
+var matchCounter = 0; 
+var totalCards = $flipCardElements.length;
 assignCardSides($cardSides);
 $playButton.on("click", function() {
   $canvas.removeClass("hidden");
@@ -414,11 +396,11 @@ $canvas.on("click", ".flip-card-front, .flip-card-front h2", function(event) {
   }
   if (flippedCards.length === 2) {
     if (areMatching(flippedCards)) {
-      matchCounter++; // increment the counter for each matching pair
+      matchCounter++;
       matchedCards.push(flippedCards[0], flippedCards[1]);
-      $matchCountDisplay.text(matchCounter); // update the match count display
-      if (matchCounter == (totalCards / 2)) { // check if all cards are matched
-        alert("All cards matched!"); // display the alert
+      $matchCountDisplay.text(matchCounter);
+      if (matchCounter == (totalCards / 2)) { 
+        alert("All cards matched!"); 
       }        
     } else {
       locked = true;
@@ -427,6 +409,8 @@ $canvas.on("click", ".flip-card-front, .flip-card-front h2", function(event) {
     flippedCards = [];
   }
 });
+
+// timer/progress bar , scoring
 function createProgressbar(id, duration, callback) {
   var progressbar = document.getElementById(id);
   progressbar.className = 'progressbar';
@@ -444,33 +428,6 @@ addEventListener('load', function() {
   createProgressbar('progressbar', '15s', function() {
     container.classList.add("frozen");
     document.getElementById("popup-image").style.display = "block";
-    console.log(matchCounter);
-    const userId = localStorage.getItem("userid");
-    const url = "http://172.26.126.49:8080/api/highscores/hscore";
-    const data = {
-      username: userId,
-      hscore: matchCounter
-    };
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    };
-    fetch(url, options)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error("There was a problem with the fetch operation:", error);
-      }); 
     });
 });
 $replay.on("click", function() {
@@ -481,26 +438,5 @@ $replay.on("click", function() {
   container.classList.remove("frozen");
   document.getElementById("popup-image").style.display = "none";
 });
-
 })
-
-updateHighscores();
-
-function updateHighscores() {
-  $.ajax({
-    url: "http://172.26.126.49:8080/api/highscores/retrieve",
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      $('.bar-3').slice(1).remove();
-
-      data.forEach(function(hscore) {
-        $('.bar-3').append(hscore.username + ' : ' + hscore.hscore);
-      });
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  });
-}
 </script>

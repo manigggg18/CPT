@@ -5,8 +5,8 @@
 
 /* "row style" is flexible size and aligns pictures in center */
 body {
-  --bg-color: #1A5D89 !important;
-  --bg-color-light: #4b7fa4; 
+  --bg-color: rgb(0, 68, 6) !important;
+  --bg-color-light: #00240d; 
   background: linear-gradient(-45deg, var(--bg-color), var(--bg-color-light), var(--bg-color), var(--bg-color-light));
   background-size: 1200% 1200% !important;
   animation: gradient 15s ease infinite !important;
@@ -29,7 +29,7 @@ body {
 
 h1, h2, h3, h4, h5, h6, header, p {
   font-family: 'Fira Mono', monospace !important;
-  color: #FCC05F !important;
+  color: #20ff32 !important;
 
 }
 
@@ -75,7 +75,7 @@ button {
   align-self: center;
   font-family: 'Fira Mono', monospace;
   width: 100%;
-  background-color: #6F8E67;
+  background-color: #ff0000;
   color: white;
   padding: 10px 10px;
   max-width: 50%;
