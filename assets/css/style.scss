@@ -6,7 +6,7 @@
 /* "row style" is flexible size and aligns pictures in center */
 body {
   --bg-color: rgb(0, 33, 2) !important;
-  --bg-color-light: #00240d; 
+  --bg-color-light: #000000; 
   background: linear-gradient(-45deg, var(--bg-color), var(--bg-color-light), var(--bg-color), var(--bg-color-light));
   background-size: 1200% 1200% !important;
   animation: gradient 15s ease infinite !important;
