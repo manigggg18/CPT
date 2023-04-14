@@ -41,7 +41,11 @@
 
   #game-container{
       position: relative !important;
-      background-color: #000000;
+      --bg-color: #90fff0 !important;
+      --bg-color-light: #ff00c8; 
+      background: linear-gradient(-45deg, var(--bg-color), var(--bg-color-light), var(--bg-color), var(--bg-color-light));
+      background-size: 1200% 1200% !important;
+      animation: gradient 7s ease infinite !important;
       text-align: center;
       width: 480px;
       height: 480px;
