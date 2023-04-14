@@ -1,31 +1,14 @@
 <style>
-  #howto-popup{
+  #greet-text{
       text-align: center;
-      display: none;
-      margin: auto;
-  }
-
-  #how-to-text{
-      text-align: left;
   }
 
   .play-container{
       text-align: center;
   }
 
-  .howto-container{
+  .greet-container{
       text-align: center;
-  }
-
-  #closing-gamestart{
-      background-color: rgb(223, 109, 109);
-      visibility: hidden;
-  }
-
-  #howto-button{
-      background-color: #f1dd00;
-      color: rgb(43, 41, 41);
-      
   }
 
   #play-button{
@@ -72,9 +55,9 @@
   border-radius: 40px;
   background-color: #90fff0;
   color: #000000;
-  box-shadow: 0 0 0em;
+  border: #ffffff;
 }
-.bar-3{
+.bar-2{
   width: 150px;
   text-align: center;
   height: 120px;
@@ -82,7 +65,7 @@
   border-radius: 40px;
   background-color: #ff00c8;
   color: #000000;
-  box-shadow: 0 0 0em;
+  border: #ffffff;
 }
 #game {
   justify-self: center;
@@ -168,7 +151,7 @@ img {
 }
 .progressbar {
   width: 200px;
-  border: solid 1px #000;
+  border: solid 1px #ffffff;
   border-radius: 6px;
 }
 .progressbar .inner {
@@ -184,7 +167,7 @@ img {
 @keyframes progressbar-countdown {
   0% {
     width: 100%;
-    background: #66D3FA;
+    background: #1aff00;
   }
   100% {
     width: 0%;
@@ -202,24 +185,11 @@ img {
 }         
 </style>
 
-<div class="howto-container">
-  <h2>Welcome To Our Site:</h2>
-  <blockquote id = "how-to-text">Are you a first timer? Don't worry! Continue to read the instructions below to familiarize yourself with our site and learn to play Code Crunch!</blockquote>
-  <button type="submit" id="howto-button">How to Play</button>
-  <div class="howto-popup" id="howto-popup">
-      <h2>Instructions for playing code crunch.</h2>
-      <blockquote id = "how-to-text">
-          - Navigate to the login page, then login with your email and make a password. 
-          - Then, come back to this "Game" bar.
-          - Click "start!" Now a thirty second clock will begin. 
-          - Click on a card to turn it over.
-          - Match the rest before the time runs out!
-          - Close the game and click play to replay!
-      </blockquote>
-      <br><button type="button" id="closing-gamestart">Close</button>
-  </div>
+<div class="greet-container">
+  <h2>Welcome To Code-Crunch!</h2>
+  <blockquote id = "greet-text">First timer? Don't worry! You'll get the hang of it!</blockquote>
 </div>
-
+<br>
 <div class="play-container">
   <button type="button" id="play-button">Play</button>
   <button type="button" id="close-game">Close</button>
@@ -228,13 +198,14 @@ img {
       <table id="bar">
         <tr>
           <th><button type="button" class="bar-1"><span id="match-count">Score</span></button></th>
-          <th><button type="button" class="bar-3"></button></th>
+          <th><button type="button" class="bar-2"></button></th>
           <th><div id='progressbar'></div></th>
         </tr>
       </table>
     </div>
   </div>
-  <br><div id="game-container">
+  <br>
+  <div id="game-container">
       <section id="canvas" class="hidden">
       <div id='progressbar'></div>
       <div id="game">
@@ -305,80 +276,12 @@ img {
         <img id="popup-image" src="{{site.baseurl}}/images/m.png">
       </div>
     </section>
-  </div><br>
+  </div>
+  <br>
 </div>
 <script>
-// buttons
-  var howtobutton = document.getElementById("howto-button");
-  var closing = document.getElementById("closing-gamestart");
-  var playbutton = document.getElementById("play-button");
-  var closegame = document.getElementById("close-game");
-  howtobutton.onclick = function() {
-      howtobutton.style.visibility = "hidden";
-      document.getElementById("howto-popup").style.display = "block";
-      closing.style.visibility = "visible";
-  }
-  closing.onclick = function() {
-      document.getElementById("howto-popup").style.display = "none";
-      howtobutton.style.visibility = "visible";
-      closing.style.visibility = "hidden";
-  }
-
-  playbutton.onclick = function() {
-      document.getElementById("game-container").style.display = "block";
-      document.getElementById("tcontainer").style.display = "block";
-      document.getElementById("play-button").style.display = "none";
-      document.getElementById("close-game").style.display = "block";
-  }
-
-  closegame.onclick = function() {
-      document.getElementById("game-container").style.display = "none";
-      document.getElementById("tcontainer").style.display = "none";
-      document.getElementById("play-button").style.display = "block";
-      document.getElementById("close-game").style.display = "none";
-  }
-
-// define variables, assign random images
-var possibleCardSides = ["{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png", "{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png"];
-var flippedCards = [];
-var matchedCards = [];
-var locked = false;
-var flipTimeout = 700;
-function getRandomIndex(length) {
-return Math.floor(Math.random() * length);
-}
-function getRandomSide(randomIndex) {
-var side;
-randomIndex = getRandomIndex(possibleCardSides.length);
-side = possibleCardSides[randomIndex];
-possibleCardSides.splice(randomIndex, 1);
-return side;
-}
-function assignCardSides($cardSides) {
-for (var i = 0; i < 16; i++) {
-  $($cardSides[i]).html('<img src="' + getRandomSide() + '">');
-}
-possibleCardSides = ["{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png", "{{site.baseurl}}/images/bug.png", "{{site.baseurl}}/images/c.png", "{{site.baseurl}}/images/ch.png", "{{site.baseurl}}/images/d.png", "{{site.baseurl}}/images/e.png", "{{site.baseurl}}/images/g.png", "{{site.baseurl}}/images/s.png", "{{site.baseurl}}/images/sc.png"];
-}
-function unFlipped($card) {
-return !$card.hasClass("flipped");
-}
-function areMatching(flippedCards) {
-return (flippedCards[0].html() === flippedCards[1].html());
-}
-function hideCards(flippedCards) {
-setTimeout(function() {
-  $(flippedCards[0]).removeClass("flipped");
-  $(flippedCards[1]).removeClass("flipped");
-  locked = false;
-}, flipTimeout);
-}
-function reset($cardSides, $flipCardElements) {
-assignCardSides($cardSides);
-matchedCards = [];
-$flipCardElements.removeClass("flipped");
-}
-$(document).ready(function(){
+var playbutton = document.getElementById("play-button");
+var closegame = document.getElementById("close-game");
 var $playButton = $("#play-button");
 var $canvas = $("#canvas");
 var $flipCardElements = $(".flip-card");
@@ -387,25 +290,115 @@ var $replay = $("#close-game");
 var $matchCountDisplay = $("#match-count"); 
 var matchCounter = 0; 
 var totalCards = $flipCardElements.length;
+var flippedCards = [];
+var matchedCards = [];
+var locked = false;
+var flipTimeout = 700;
+var url = "{{site.baseurl}}/images/";
+var possibleCardSides = [url + "bug.png", 
+                        url + "c.png", 
+                        url + "ch.png", 
+                        url + "d.png", 
+                        url + "e.png", 
+                        url + "g.png", 
+                        url + "s.png", 
+                        url + "sc.png", 
+                        url + "bug.png", 
+                        url + "c.png", 
+                        url + "ch.png", 
+                        url + "d.png", 
+                        url + "e.png", 
+                        url + "g.png", 
+                        url + "s.png", 
+                        url + "sc.png"];
+
+playbutton.onclick = function() {
+  document.getElementById("game-container").style.display = "block";
+  document.getElementById("tcontainer").style.display = "block";
+  document.getElementById("play-button").style.display = "none";
+  document.getElementById("close-game").style.display = "block";
+}
+closegame.onclick = function() {
+  document.getElementById("game-container").style.display = "none";
+  document.getElementById("tcontainer").style.display = "none";
+  document.getElementById("play-button").style.display = "block";
+  document.getElementById("close-game").style.display = "none";
+}
+                        
+function getRandomIndex(length) {
+  return Math.floor(Math.random() * length);
+}
+
+function getRandomSide(randomIndex) {
+  var side;
+  randomIndex = getRandomIndex(possibleCardSides.length);
+  side = possibleCardSides[randomIndex];
+  possibleCardSides.splice(randomIndex, 1);
+  return side;
+}
+
+function assignCardSides($cardSides) {
+  for (var i = 0; i < 16; i++) {
+    $($cardSides[i]).html('<img src="' + getRandomSide() + '">');
+  }
+  possibleCardSides = [url + "bug.png", 
+                      url + "c.png", 
+                      url + "ch.png", 
+                      url + "d.png", 
+                      url + "e.png", 
+                      url + "g.png", 
+                      url + "s.png", 
+                      url + "sc.png", 
+                      url + "bug.png", 
+                      url + "c.png", 
+                      url + "ch.png", 
+                      url + "d.png", 
+                      url + "e.png", 
+                      url + "g.png", 
+                      url + "s.png", 
+                      url + "sc.png"];
+}
+
+function unFlipped($card) {
+  return !$card.hasClass("flipped");
+}
+
+function areMatching(flippedCards) {
+  return (flippedCards[0].html() === flippedCards[1].html());
+}
+
+function hideCards(flippedCards) {
+  setTimeout(function() {
+    $(flippedCards[0]).removeClass("flipped");
+    $(flippedCards[1]).removeClass("flipped");
+    locked = false;
+  }, 
+  flipTimeout);
+}
+
+function reset($cardSides, $flipCardElements) {
+  assignCardSides($cardSides);
+  matchedCards = [];
+  $flipCardElements.removeClass("flipped");
+}
+
 assignCardSides($cardSides);
-$playButton.on("click", function() {
-  $canvas.removeClass("hidden");
-});
+
+$playButton.click(() => $canvas.removeClass("hidden"));
+
 $canvas.on("click", ".flip-card-front, .flip-card-front h2", function(event) {
-  if(event.target != this || locked){ return true; }
+  if(event.target != this || locked) return true;
+  
   var $card = $(event.target).closest(".flip-card");
   if (unFlipped($card)) {
     $card.addClass("flipped");
     flippedCards.push($card);
   }
+  
   if (flippedCards.length === 2) {
     if (areMatching(flippedCards)) {
-      matchCounter++;
-      matchedCards.push(flippedCards[0], flippedCards[1]);
-      $matchCountDisplay.text(matchCounter);
-      if (matchCounter == (totalCards / 2)) { 
-        alert("All cards matched!"); 
-      }        
+      $matchCountDisplay.text(++matchCounter);
+      matchedCards.push(...flippedCards);
     } else {
       locked = true;
       hideCards(flippedCards);
@@ -414,33 +407,30 @@ $canvas.on("click", ".flip-card-front, .flip-card-front h2", function(event) {
   }
 });
 
-// timer/progress bar , scoring
 function createProgressbar(id, duration, callback) {
-  var progressbar = document.getElementById(id);
-  progressbar.className = 'progressbar';
-  var progressbarinner = document.createElement('div');
-  progressbarinner.className = 'inner';
-  progressbarinner.style.animationDuration = duration;
-  if (typeof(callback) === 'function') {
-    progressbarinner.addEventListener('animationend', callback);
-  }
-  progressbar.appendChild(progressbarinner);
-  progressbarinner.style.animationPlayState = 'running';
+  const pb = document.getElementById(id);
+  pb.className = 'progressbar';
+  const pbi = document.createElement('div');
+  pbi.className = 'inner';
+  pbi.style.animationDuration = duration;
+  if (typeof(callback) === 'function')
+    pbi.addEventListener('animationend', callback);
+  pb.appendChild(pbi);
+  pbi.style.animationPlayState = 'running';
 }
-addEventListener('load', function() {
-  const container = document.getElementById("game-container");
-  createProgressbar('progressbar', '15s', function() {
-    container.classList.add("frozen");
-    document.getElementById("popup-image").style.display = "block";
-    });
-});
-$replay.on("click", function() {
-  const container = document.getElementById("game-container");
+
+addEventListener('load', () => createProgressbar('progressbar', '15s', () => {
+  const c = document.getElementById("game-container");
+  c.classList.add("frozen");
+  $("#popup-image").show();
+}));
+
+$replay.click(() => {
+  const c = document.getElementById("game-container");
   reset($cardSides, $flipCardElements);
   matchCounter = 0;
   $matchCountDisplay.text(matchCounter);
-  container.classList.remove("frozen");
-  document.getElementById("popup-image").style.display = "none";
+  c.classList.remove("frozen");
+  $("#popup-image").hide();
 });
-})
 </script>
