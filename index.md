@@ -210,7 +210,7 @@ img {
       <div id='progressbar'></div>
       <div id="game">
       </div>
-      <img id="popup-image" src="https://github.com/manigggg18/CPT/blob/main/images/m.png">
+      <img id="popup-image" src="{{site.baseurl}}/images/m.png">
     </section>
   </div>
   <br>
@@ -243,7 +243,7 @@ var flippedCards = [];
 var matchedCards = [];
 var locked = false;
 var flipTimeout = 700;
-var url = "https://github.com/manigggg18/CPT/tree/main/images/";
+var url = "{{site.baseurl}}/images/";
 var possibleCardSides = [url + "bug.png", 
                         url + "c.png", 
                         url + "ch.png", 
