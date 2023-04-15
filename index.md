@@ -229,16 +229,16 @@ for (let i = 1; i <= 16; i++) {
   gameDiv.appendChild(flipCardDiv);
 }
 
+var playbutton = document.getElementById("play-button");
+var closegame = document.getElementById("close-game");
 var playButton = document.querySelector("#play-button");
 var canvas = document.querySelector("#canvas");
 var flipCardElements = document.querySelectorAll(".flip-card");
 var cardSides = document.querySelectorAll(".flip-card .flip-card-back");
 var replay = document.querySelector("#close-game");
 var matchCountDisplay = document.querySelector("#match-count");
+var matchCounter = 0;
 var totalCards = flipCardElements.length;
-var playbutton = document.getElementById("play-button");
-var closegame = document.getElementById("close-game");
-var matchCounter = 0; 
 var flippedCards = [];
 var matchedCards = [];
 var locked = false;
@@ -313,7 +313,7 @@ function unFlipped(card) {
 }
 
 function areMatching(flippedCards) {
-  return (flippedCards[0].html() === flippedCards[1].html());
+  return (flippedCards[0].innerHTML === flippedCards[1].innerHTML);
 }
 
 function hideCards(flippedCards) {
@@ -327,9 +327,9 @@ function hideCards(flippedCards) {
 function reset(cardSides, flipCardElements) {
   assignCardSides(cardSides);
   matchedCards = [];
-  for (var i = 0; i < flipCardElements.length; i++) {
-    flipCardElements[i].classList.remove("flipped");
-  }
+  flipCardElements.forEach(function(card) {
+    card.classList.remove("flipped");
+  });
 }
 
 assignCardSides(cardSides);
@@ -339,21 +339,22 @@ playButton.addEventListener("click", function() {
 });
 
 canvas.addEventListener("click", function(event) {
-  if (event.target != this || locked) return true;
-  var card = event.target.closest(".flip-card");
-  if (unFlipped(card)) {
-    card.classList.add("flipped");
-    flippedCards.push(card);
-  }
-  if (flippedCards.length === 2) {
-    if (areMatching(flippedCards)) {
-      matchCountDisplay.textContent = ++matchCounter;
-      matchedCards.push(...flippedCards);
-    } else {
-      locked = true;
-      hideCards(flippedCards);
+  if (event.target.classList.contains("flip-card-front") && !locked) {
+    var card = event.target.closest(".flip-card");
+    if (unFlipped(card)) {
+      card.classList.add("flipped");
+      flippedCards.push(card);
     }
-    flippedCards = [];
+    if (flippedCards.length === 2) {
+      if (areMatching(flippedCards)) {
+        matchCountDisplay.textContent = ++matchCounter;
+        matchedCards.push(...flippedCards);
+      } else {
+        locked = true;
+        hideCards(flippedCards);
+      }
+      flippedCards = [];
+    }
   }
 });
 
@@ -369,13 +370,11 @@ function createProgressbar(id, duration, callback) {
   pbi.style.animationPlayState = 'running';
 }
 
-addEventListener("load", function() {
-  createProgressbar("progressbar", "15s", function() {
-    const c = document.getElementById("game-container");
-    c.classList.add("frozen");
-    document.querySelector("#popup-image").style.display = "block";
-  });
-});
+addEventListener('load', () => createProgressbar('progressbar', '15s', () => {
+  const c = document.getElementById("game-container");
+  c.classList.add("frozen");
+  document.getElementById("popup-image").style.display = "block";
+}));
 
 replay.addEventListener("click", function() {
   const c = document.getElementById("game-container");
@@ -383,6 +382,6 @@ replay.addEventListener("click", function() {
   matchCounter = 0;
   matchCountDisplay.textContent = matchCounter;
   c.classList.remove("frozen");
-  document.querySelector("#popup-image").style.display = "none";
+  document.getElementById("popup-image").style.display = "none";
 });
 </script>
