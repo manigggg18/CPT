@@ -1,41 +1,41 @@
 <style>
-  #greet-text{
-      text-align: center;
-  }
+#greet-text{
+    text-align: center;
+}
 
-  .play-container{
-      text-align: center;
-  }
+.play-container{
+    text-align: center;
+}
 
-  .greet-container{
-      text-align: center;
-  }
+.greet-container{
+    text-align: center;
+}
 
-  #play-button{
-      display: block;
-      margin: auto;
-  }
-  
-  #close-game{
-      display: none;
-      margin: auto;
-      background-color: rgb(223, 109, 109);
-  }
+#play-button{
+    display: block;
+    margin: auto;
+}
 
-  #game-container{
-      position: relative !important;
-      --bg-color: #90fff0 !important;
-      --bg-color-light: #ff00c8; 
-      background: linear-gradient(-45deg, var(--bg-color), var(--bg-color-light), var(--bg-color), var(--bg-color-light));
-      background-size: 1200% 1200% !important;
-      animation: gradient 7s ease infinite !important;
-      text-align: center;
-      width: 480px;
-      height: 480px;
-      border-radius: 20px;
-      margin: auto;
-      display: none;
-  }
+#close-game{
+    display: none;
+    margin: auto;
+    background-color: rgb(223, 109, 109);
+}
+
+#game-container{
+    position: relative !important;
+    --bg-color: #90fff0 !important;
+    --bg-color-light: #ff00c8; 
+    background: linear-gradient(-45deg, var(--bg-color), var(--bg-color-light), var(--bg-color), var(--bg-color-light));
+    background-size: 1200% 1200% !important;
+    animation: gradient 7s ease infinite !important;
+    text-align: center;
+    width: 480px;
+    height: 480px;
+    border-radius: 20px;
+    margin: auto;
+    display: none;
+}
 #tcontainer{
   display: none;
 }
@@ -86,7 +86,7 @@
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
-.flip-card figure {
+.flip-card div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,77 +209,26 @@ img {
       <section id="canvas" class="hidden">
       <div id='progressbar'></div>
       <div id="game">
-        <div id="flip-card-1" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-2" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-3" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-4" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-5" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-6" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-7" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-8" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-9" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-10" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-11" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-12" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-13" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-14" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-15" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <div id="flip-card-16" class="flip-card">
-          <figure class="flip-card-front"></figure>
-          <figure class="flip-card-back"></figure>
-        </div>
-        <img id="popup-image" src="{{site.baseurl}}/images/m.png">
       </div>
+      <img id="popup-image" src="{{site.baseurl}}/images/m.png">
     </section>
   </div>
   <br>
 </div>
 <script>
+const gameDiv = document.getElementById('game');
+
+for (let i = 1; i <= 16; i++) {
+  const flipCardDiv = document.createElement('div');
+  flipCardDiv.id = 'flip-card-' + i;
+  flipCardDiv.classList.add('flip-card');
+  flipCardDiv.innerHTML = `
+    <div class="flip-card-front"></div>
+    <div class="flip-card-back"></div>
+  `;
+  gameDiv.appendChild(flipCardDiv);
+}
+
 var playbutton = document.getElementById("play-button");
 var closegame = document.getElementById("close-game");
 var $playButton = $("#play-button");
