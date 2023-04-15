@@ -243,7 +243,7 @@ var flippedCards = [];
 var matchedCards = [];
 var locked = false;
 var flipTimeout = 700;
-var url = "https://github.com/manigggg18/CPT/blob/main/images/";
+var url = "https://github.com/manigggg18/CPT/tree/main/images/";
 var possibleCardSides = [url + "bug.png", 
                         url + "c.png", 
                         url + "ch.png", 
