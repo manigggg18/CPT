@@ -36,7 +36,7 @@
     margin: auto;
     display: none;
 }
-#tcontainer{
+#timer-container{
   display: none;
 }
 #bar{
@@ -193,7 +193,7 @@ img {
 <div class="play-container">
   <button type="button" id="play-button">Play</button>
   <button type="button" id="close-game">Close</button>
-  <div id="tcontainer">
+  <div id="timer-container">
     <div id = "timer">
       <table id="bar">
         <tr>
@@ -210,7 +210,7 @@ img {
       <div id='progressbar'></div>
       <div id="game">
       </div>
-      <img id="popup-image" src="{{site.baseurl}}/images/m.png">
+      <img id="popup-image" src="https://github.com/manigggg18/CPT/blob/main/images/m.png">
     </section>
   </div>
   <br>
@@ -243,7 +243,7 @@ var flippedCards = [];
 var matchedCards = [];
 var locked = false;
 var flipTimeout = 700;
-var url = "{{site.baseurl}}/images/";
+var url = "https://github.com/manigggg18/CPT/blob/main/images/";
 var possibleCardSides = [url + "bug.png", 
                         url + "c.png", 
                         url + "ch.png", 
@@ -263,13 +263,13 @@ var possibleCardSides = [url + "bug.png",
 
 playbutton.onclick = function() {
   document.getElementById("game-container").style.display = "block";
-  document.getElementById("tcontainer").style.display = "block";
+  document.getElementById("timer-container").style.display = "block";
   document.getElementById("play-button").style.display = "none";
   document.getElementById("close-game").style.display = "block";
 }
 closegame.onclick = function() {
   document.getElementById("game-container").style.display = "none";
-  document.getElementById("tcontainer").style.display = "none";
+  document.getElementById("timer-container").style.display = "none";
   document.getElementById("play-button").style.display = "block";
   document.getElementById("close-game").style.display = "none";
 }
@@ -335,7 +335,7 @@ assignCardSides($cardSides);
 
 $playButton.click(() => $canvas.removeClass("hidden"));
 
-$canvas.on("click", ".flip-card-front, .flip-card-front h2", function(event) {
+$canvas.on("click", ".flip-card-front, .flip-card-front", function(event) {
   if(event.target != this || locked) return true;
   
   var $card = $(event.target).closest(".flip-card");
