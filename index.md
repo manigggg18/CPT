@@ -229,16 +229,16 @@ for (let i = 1; i <= 16; i++) {
   gameDiv.appendChild(flipCardDiv);
 }
 
+var playButton = document.querySelector("#play-button");
+var canvas = document.querySelector("#canvas");
+var flipCardElements = document.querySelectorAll(".flip-card");
+var cardSides = document.querySelectorAll(".flip-card .flip-card-back");
+var replay = document.querySelector("#close-game");
+var matchCountDisplay = document.querySelector("#match-count");
+var totalCards = flipCardElements.length;
 var playbutton = document.getElementById("play-button");
 var closegame = document.getElementById("close-game");
-var $playButton = $("#play-button");
-var $canvas = $("#canvas");
-var $flipCardElements = $(".flip-card");
-var $cardSides = $(".flip-card .flip-card-back");
-var $replay = $("#close-game");
-var $matchCountDisplay = $("#match-count"); 
 var matchCounter = 0; 
-var totalCards = $flipCardElements.length;
 var flippedCards = [];
 var matchedCards = [];
 var locked = false;
@@ -286,9 +286,9 @@ function getRandomSide(randomIndex) {
   return side;
 }
 
-function assignCardSides($cardSides) {
+function assignCardSides(cardSides) {
   for (var i = 0; i < 16; i++) {
-    $($cardSides[i]).html('<img src="' + getRandomSide() + '">');
+    cardSides[i].innerHTML = '<img src="' + getRandomSide() + '">';
   }
   possibleCardSides = [url + "bug.png", 
                       url + "c.png", 
@@ -308,8 +308,8 @@ function assignCardSides($cardSides) {
                       url + "sc.png"];
 }
 
-function unFlipped($card) {
-  return !$card.hasClass("flipped");
+function unFlipped(card) {
+  return !card.classList.contains("flipped");
 }
 
 function areMatching(flippedCards) {
@@ -318,35 +318,36 @@ function areMatching(flippedCards) {
 
 function hideCards(flippedCards) {
   setTimeout(function() {
-    $(flippedCards[0]).removeClass("flipped");
-    $(flippedCards[1]).removeClass("flipped");
+    flippedCards[0].classList.remove("flipped");
+    flippedCards[1].classList.remove("flipped");
     locked = false;
-  }, 
-  flipTimeout);
+  }, flipTimeout);
 }
 
-function reset($cardSides, $flipCardElements) {
-  assignCardSides($cardSides);
+function reset(cardSides, flipCardElements) {
+  assignCardSides(cardSides);
   matchedCards = [];
-  $flipCardElements.removeClass("flipped");
+  for (var i = 0; i < flipCardElements.length; i++) {
+    flipCardElements[i].classList.remove("flipped");
+  }
 }
 
-assignCardSides($cardSides);
+assignCardSides(cardSides);
 
-$playButton.click(() => $canvas.removeClass("hidden"));
+playButton.addEventListener("click", function() {
+  canvas.classList.remove("hidden");
+});
 
-$canvas.on("click", ".flip-card-front, .flip-card-front", function(event) {
-  if(event.target != this || locked) return true;
-  
-  var $card = $(event.target).closest(".flip-card");
-  if (unFlipped($card)) {
-    $card.addClass("flipped");
-    flippedCards.push($card);
+canvas.addEventListener("click", function(event) {
+  if (event.target != this || locked) return true;
+  var card = event.target.closest(".flip-card");
+  if (unFlipped(card)) {
+    card.classList.add("flipped");
+    flippedCards.push(card);
   }
-  
   if (flippedCards.length === 2) {
     if (areMatching(flippedCards)) {
-      $matchCountDisplay.text(++matchCounter);
+      matchCountDisplay.textContent = ++matchCounter;
       matchedCards.push(...flippedCards);
     } else {
       locked = true;
@@ -368,18 +369,20 @@ function createProgressbar(id, duration, callback) {
   pbi.style.animationPlayState = 'running';
 }
 
-addEventListener('load', () => createProgressbar('progressbar', '15s', () => {
-  const c = document.getElementById("game-container");
-  c.classList.add("frozen");
-  $("#popup-image").show();
-}));
+addEventListener("load", function() {
+  createProgressbar("progressbar", "15s", function() {
+    const c = document.getElementById("game-container");
+    c.classList.add("frozen");
+    document.querySelector("#popup-image").style.display = "block";
+  });
+});
 
-$replay.click(() => {
+replay.addEventListener("click", function() {
   const c = document.getElementById("game-container");
-  reset($cardSides, $flipCardElements);
+  reset(cardSides, flipCardElements);
   matchCounter = 0;
-  $matchCountDisplay.text(matchCounter);
+  matchCountDisplay.textContent = matchCounter;
   c.classList.remove("frozen");
-  $("#popup-image").hide();
+  document.querySelector("#popup-image").style.display = "none";
 });
 </script>
