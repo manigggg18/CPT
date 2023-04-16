@@ -227,7 +227,7 @@ playbutton.onclick = function() {
 
 // by using the randSide function it is assured that the items in the list are assigned to each card randomly with no repeats
 var sides = document.querySelectorAll(".flip-card .flip-card-back");
-function assignSides(sides) {
+function assignimages(sides) {
   // each image is listed twice since there are 16 cards
   var url = "{{site.baseurl}}/images/";   // for max efficiency
   // CITATION: all of the following images are from the website Font Awesome
@@ -249,9 +249,7 @@ function assignSides(sides) {
                         url + "sc.png",   
                         url + "sc.png"
                       ];
-
   var imagesPostReplay = randImages.slice();
-  
   for (var i = 0; i < 16; i++) {
     var randomIndex = Math.floor(Math.random() * randImages.length);
     var side = randImages[randomIndex];
@@ -259,9 +257,8 @@ function assignSides(sides) {
     randImages.splice(randomIndex, 1);
     sides[i].innerHTML = '<img src="' + side + '">';
   }
-
-  if (typeof assignSides.initialized == 'undefined') {
-    assignSides.initialized = true;
+  if (typeof assignimages.initialized == 'undefined') {
+    assignimages.initialized = true;
     // since the reset function relies on randImages being repeated, it is more efficient to make a copy of the list instead
     randImages = imagesPostReplay;  
   }
@@ -290,7 +287,7 @@ function hideCards(flippedCards) {
 // Once the game is restarted, images are assigned randomly and all cards will be face-down
 var flipCardElements = document.querySelectorAll(".flip-card");
 function reset(sides, flipCardElements) {
-  assignSides(sides);
+  assignimages(sides);
   flipCardElements.forEach(function(card) {
     card.classList.remove("flipped");
   });
@@ -298,8 +295,8 @@ function reset(sides, flipCardElements) {
 
 var matchCountDisplay = document.querySelector("#match-count");
 var matchCounter = 0;     // 0 initial score
-// assignSides function called
-assignSides(sides);
+// assignimages function called
+assignimages(sides);
 var canvas = document.querySelector("#canvas");   
 canvas.addEventListener("click", function(event) {     // interactive area with click event listener
   if (event.target.classList.contains("flip-card-front")) {   
