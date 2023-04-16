@@ -217,7 +217,7 @@ for (let i = 1; i <= 16; i++) {
 }
 
 // onevent click listeners for play button and close button (closing and starting the game restarts the game including score and timer)
-// CITATION: the code for the buttons were written with the help of Tirth Thakkar, another APCSP student
+// CITATION: the code for the buttons were written with the help of a fellow APCSP student who prefers to remain anonymous
 var playbutton = document.getElementById("play-button");
 var closegame = document.getElementById("close-game");
 playbutton.onclick = function() {
@@ -235,6 +235,7 @@ closegame.onclick = function() {
 
 // each image is listed twice since there are 16 cards
 var url = "{{site.baseurl}}/images/";   // for max efficiency
+// CITATION: all of the following images are from the website Font Awesome
 var possibleSides = [
                       url + "bug.png",
                       url + "bug.png", 
@@ -281,7 +282,7 @@ function unflipped(card) {
 
 // checking if the html property (image) of two selected cards match
 var flippedCards = [];
-function areMatching(flippedCards) {
+function matched(flippedCards) {
   return (flippedCards[0].innerHTML == flippedCards[1].innerHTML);
 }
 // if cards don't match, they will stay flipped for 700ms and then the "flipped" class is removed from both cards
@@ -294,7 +295,7 @@ function hideCards(flippedCards) {
   hold);
 }
 
-// reseting: by clicking close and clicking play. Once the game is restarted, images are assigned randomly and all cards will be face-down
+// Once the game is restarted, images are assigned randomly and all cards will be face-down
 var flipCardElements = document.querySelectorAll(".flip-card");
 function reset(sides, flipCardElements) {
   assignSides(sides);
@@ -304,28 +305,35 @@ function reset(sides, flipCardElements) {
 }
 
 var matchCountDisplay = document.querySelector("#match-count");
-var matchCounter = 0;                                           // both of these variables are for scoring
+var matchCounter = 0;     // 0 initial score
 // assignSides function called
 assignSides(sides);
-var canvas = document.querySelector("#canvas");   // interactive area
-canvas.addEventListener("click", function(event) {
-  if (event.target.classList.contains("flip-card-front")) {
+var canvas = document.querySelector("#canvas");   
+canvas.addEventListener("click", function(event) {     // interactive area with click event listener
+  if (event.target.classList.contains("flip-card-front")) {   
+    // closest element with the flip-card class
     var card = event.target.closest(".flip-card");
     if (unflipped(card)) {
+      // flipped cards assigned the class "flipped" and added to the flippedCards array
       card.classList.add("flipped");
       flippedCards.push(card);
     }
+    // if two cards have been flipped
     if (flippedCards.length == 2) {
-      if (areMatching(flippedCards)) {
+      if (matched(flippedCards)) {
+        // update score
         matchCountDisplay.textContent = ++matchCounter;
       } else {
+        // cards hidden if don't match
         hideCards(flippedCards);
       }
+      // array emptied
       flippedCards = [];
     }
   }
 });
 
+// timer function with parameters
 function initTimer(id, duration, callback) {
   var t = document.getElementById(id);
   t.className = 'timer';
@@ -335,22 +343,24 @@ function initTimer(id, duration, callback) {
   if (typeof(callback) === 'function')
     tInner.addEventListener('animationend', callback);
     t.appendChild(tInner);
+    // start animation
     tInner.style.animationPlayState = 'running';
 }
 
-addEventListener('load', () => initTimer('timer', '15s', () => {
-  var scrnfreeze = document.getElementById("game-container");
-  scrnfreeze.classList.add("frozen");
-  document.getElementById("popup-image").style.display = "block";
+addEventListener('load', () => initTimer('timer', '25s', () => {    // duration set to 25s
+  var scrnfreeze = document.getElementById("game-container");     
+  scrnfreeze.classList.add("frozen");                             // game is frozen once timer reaches zero
+  document.getElementById("popup-image").style.display = "block";        // time's up message pop up
 }));
 
+// reseting: close button acts as a replay button
 var replay = document.querySelector("#close-game");
 replay.addEventListener("click", function() {
   var scrnfreeze = document.getElementById("game-container");
-  reset(sides, flipCardElements);
-  matchCounter = 0;
-  matchCountDisplay.textContent = matchCounter;
-  scrnfreeze.classList.remove("frozen");
-  document.getElementById("popup-image").style.display = "none";
+  reset(sides, flipCardElements);   // reset function called
+  matchCounter = 0;   // score reset
+  matchCountDisplay.textContent = matchCounter;    // score display reset
+  scrnfreeze.classList.remove("frozen");            // frozen effect removed
+  document.getElementById("popup-image").style.display = "none";    // pop up removed
 });
 </script>
