@@ -217,20 +217,12 @@ for (let i = 1; i <= 16; i++) {
 }
 
 // onevent click listeners for play button and close button (closing and starting the game restarts the game including score and timer)
-// CITATION: the code for the buttons were written with the help of a fellow APCSP student who prefers to remain anonymous
 var playbutton = document.getElementById("play-button");
-var closegame = document.getElementById("close-game");
 playbutton.onclick = function() {
   document.getElementById("game-container").style.display = "block";
   document.getElementById("timer-container").style.display = "block";
   document.getElementById("play-button").style.display = "none";
   document.getElementById("close-game").style.display = "block";
-}
-closegame.onclick = function() {
-  document.getElementById("game-container").style.display = "none";
-  document.getElementById("timer-container").style.display = "none";
-  document.getElementById("play-button").style.display = "block";
-  document.getElementById("close-game").style.display = "none";
 }
 
 // each image is listed twice since there are 16 cards
@@ -354,13 +346,17 @@ addEventListener('load', () => initTimer('timer', '25s', () => {    // duration 
 }));
 
 // reseting: close button acts as a replay button
-var replay = document.querySelector("#close-game");
-replay.addEventListener("click", function() {
+var closegame = document.getElementById("close-game");
+closegame.onclick = function() {
   var scrnfreeze = document.getElementById("game-container");
   reset(sides, flipCardElements);   // reset function called
   matchCounter = 0;   // score reset
   matchCountDisplay.textContent = matchCounter;    // score display reset
   scrnfreeze.classList.remove("frozen");            // frozen effect removed
   document.getElementById("popup-image").style.display = "none";    // pop up removed
-});
+  document.getElementById("game-container").style.display = "none";
+  document.getElementById("timer-container").style.display = "none";
+  document.getElementById("play-button").style.display = "block";
+  document.getElementById("close-game").style.display = "none";
+}
 </script>
