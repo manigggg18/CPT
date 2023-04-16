@@ -225,46 +225,46 @@ playbutton.onclick = function() {
   document.getElementById("close-game").style.display = "block";
 }
 
-// each image is listed twice since there are 16 cards
-var url = "{{site.baseurl}}/images/";   // for max efficiency
-// CITATION: all of the following images are from the website Font Awesome
-var possibleSides = [
-                      url + "bug.png",
-                      url + "bug.png", 
-                      url + "c.png",
-                      url + "c.png",  
-                      url + "ch.png", 
-                      url + "ch.png", 
-                      url + "d.png", 
-                      url + "d.png",
-                      url + "e.png", 
-                      url + "e.png",
-                      url + "g.png",
-                      url + "g.png",  
-                      url + "s.png", 
-                      url + "s.png", 
-                      url + "sc.png",   
-                      url + "sc.png"];
-// each image is randomly selected and returned while also being deleted from the list 
-function randIndex(length) {
-  return Math.floor(Math.random() * length);
-}
-function randSide(randomIndex) {
-  randomIndex = randIndex(possibleSides.length);
-  var side = possibleSides[randomIndex];
-  possibleSides.splice(randomIndex, 1);
-  return side;
-}
-
 // by using the randSide function it is assured that the items in the list are assigned to each card randomly with no repeats
 var sides = document.querySelectorAll(".flip-card .flip-card-back");
 function assignSides(sides) {
-  // since the reset function relies on possibleSides being repeated, it is more efficient to make a copy of the list instead
-  var sidesPostReplay = possibleSides.slice();  
+  // each image is listed twice since there are 16 cards
+  var url = "{{site.baseurl}}/images/";   // for max efficiency
+  // CITATION: all of the following images are from the website Font Awesome
+  var possibleSides = [
+                        url + "bug.png",
+                        url + "bug.png", 
+                        url + "c.png",
+                        url + "c.png",  
+                        url + "ch.png", 
+                        url + "ch.png", 
+                        url + "d.png", 
+                        url + "d.png",
+                        url + "e.png", 
+                        url + "e.png",
+                        url + "g.png",
+                        url + "g.png",  
+                        url + "s.png", 
+                        url + "s.png", 
+                        url + "sc.png",   
+                        url + "sc.png"
+                      ];
+
+  var sidesPostReplay = possibleSides.slice();
+  
   for (var i = 0; i < 16; i++) {
-    sides[i].innerHTML = '<img src="' + randSide() + '">';
+    var randomIndex = Math.floor(Math.random() * possibleSides.length);
+    var side = possibleSides[randomIndex];
+    // each image is randomly selected and returned while also being deleted from the list 
+    possibleSides.splice(randomIndex, 1);
+    sides[i].innerHTML = '<img src="' + side + '">';
   }
-  possibleSides = sidesPostReplay;
+
+  if (typeof assignSides.initialized == 'undefined') {
+    assignSides.initialized = true;
+    // since the reset function relies on possibleSides being repeated, it is more efficient to make a copy of the list instead
+    possibleSides = sidesPostReplay;  // sidesPostReplay = copy of possibleSides
+  }
 }
 
 function unflipped(card) {
