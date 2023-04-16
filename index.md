@@ -49,21 +49,11 @@
   padding: 10px 10px;
 }
 .bar-1 {
-  margin-left: 10px;
+  margin-left: 100px;
   width: 150px;
   height: 80px;
   border-radius: 40px;
   background-color: #90fff0;
-  color: #000000;
-  border: #ffffff;
-}
-.bar-2{
-  width: 150px;
-  text-align: center;
-  height: 120px;
-  margin-left: 20px;
-  border-radius: 40px;
-  background-color: #ff00c8;
   color: #000000;
   border: #ffffff;
 }
@@ -149,14 +139,14 @@ img {
   width: 400px;
   height: 300px;
 }
-.progressbar {
+.timer {
   width: 200px;
   border: solid 1px #ffffff;
   border-radius: 6px;
 }
-.progressbar .inner {
+.timer .inner {
   height: 15px;
-  animation: progressbar-countdown;
+  animation: timer-start;
   animation-duration: 40s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -164,7 +154,7 @@ img {
   animation-timing-function: linear;
   border-radius: 6px;
 }
-@keyframes progressbar-countdown {
+@keyframes timer-start {
   0% {
     width: 100%;
     background: #1aff00;
@@ -194,20 +184,16 @@ img {
   <button type="button" id="play-button">Play</button>
   <button type="button" id="close-game">Close</button>
   <div id="timer-container">
-    <div id = "timer">
-      <table id="bar">
-        <tr>
-          <th><button type="button" class="bar-1"><span id="match-count">Score</span></button></th>
-          <th><button type="button" class="bar-2"></button></th>
-          <th><div id='progressbar'></div></th>
-        </tr>
-      </table>
-    </div>
+    <table id="bar">
+      <tr>
+        <th><button type="button" class="bar-1"><span id="match-count">Score</span></button></th>
+        <th><div id='timer'></div></th>
+      </tr>
+    </table>
   </div>
   <br>
   <div id="game-container">
       <section id="canvas" class="hidden">
-      <div id='progressbar'></div>
       <div id="game">
       </div>
       <img id="popup-image" src="{{site.baseurl}}/images/m.png">
@@ -216,9 +202,9 @@ img {
   <br>
 </div>
 <script>
-var gameDiv = document.getElementById('game');
 
 // for loop: creating 16 cards each with a unique id
+var gameDiv = document.getElementById('game');
 for (let i = 1; i <= 16; i++) {
   var flipCardDiv = document.createElement('div');
   flipCardDiv.id = 'flip-card-' + i;
@@ -230,20 +216,10 @@ for (let i = 1; i <= 16; i++) {
   gameDiv.appendChild(flipCardDiv);
 }
 
-var canvas = document.querySelector("#canvas");
-var flipCardElements = document.querySelectorAll(".flip-card");
-var sides = document.querySelectorAll(".flip-card .flip-card-back");
-var replay = document.querySelector("#close-game");
-var matchCountDisplay = document.querySelector("#match-count");
-var matchCounter = 0;
-var totalCards = flipCardElements.length;
-var matchedCards = [];
-var url = "{{site.baseurl}}/images/";
-
 // onevent click listeners for play button and close button (closing and starting the game restarts the game including score and timer)
+// CITATION: the code for the buttons were written with the help of Tirth Thakkar, another APCSP student
 var playbutton = document.getElementById("play-button");
 var closegame = document.getElementById("close-game");
-var playButton = document.querySelector("#play-button");
 playbutton.onclick = function() {
   document.getElementById("game-container").style.display = "block";
   document.getElementById("timer-container").style.display = "block";
@@ -256,15 +232,9 @@ closegame.onclick = function() {
   document.getElementById("play-button").style.display = "block";
   document.getElementById("close-game").style.display = "none";
 }
-playButton.addEventListener("click", function() {
-  canvas.classList.remove("hidden");
-});
 
-
-function getRandomIndex(length) {
-  return Math.floor(Math.random() * length);
-}
-
+// each image is listed twice since there are 16 cards
+var url = "{{site.baseurl}}/images/";   // for max efficiency
 var possibleSides = [
                       url + "bug.png",
                       url + "bug.png", 
@@ -282,60 +252,72 @@ var possibleSides = [
                       url + "s.png", 
                       url + "sc.png",   
                       url + "sc.png"];
-
-function getRandomSide(randomIndex) {
-  randomIndex = getRandomIndex(possibleSides.length);
+// each image is randomly selected and returned while also being deleted from the list 
+function randIndex(length) {
+  return Math.floor(Math.random() * length);
+}
+function randSide(randomIndex) {
+  randomIndex = randIndex(possibleSides.length);
   var side = possibleSides[randomIndex];
   possibleSides.splice(randomIndex, 1);
   return side;
 }
 
+// by using the randSide function it is assured that the items in the list are assigned to each card randomly with no repeats
+var sides = document.querySelectorAll(".flip-card .flip-card-back");
 function assignSides(sides) {
-  var sidesPostReplay = possibleSides.slice();  // since the reset function relies on possibleSides being repeated, it is more efficient to make a copy of the list instead
+  // since the reset function relies on possibleSides being repeated, it is more efficient to make a copy of the list instead
+  var sidesPostReplay = possibleSides.slice();  
   for (var i = 0; i < 16; i++) {
-    sides[i].innerHTML = '<img src="' + getRandomSide() + '">';
+    sides[i].innerHTML = '<img src="' + randSide() + '">';
   }
   possibleSides = sidesPostReplay;
 }
 
-function unFlipped(card) {
+function unflipped(card) {
+  // usage of NOT operator: items with the flipped class result in False, which is inverted by the NOT operator, resulting in True
   return !card.classList.contains("flipped");
 }
 
+// checking if the html property (image) of two selected cards match
 var flippedCards = [];
 function areMatching(flippedCards) {
   return (flippedCards[0].innerHTML == flippedCards[1].innerHTML);
 }
-
-var flipTimeout = 800;
+// if cards don't match, they will stay flipped for 700ms and then the "flipped" class is removed from both cards
+var hold = 700;
 function hideCards(flippedCards) {
   setTimeout(function() {
     flippedCards[0].classList.remove("flipped");
     flippedCards[1].classList.remove("flipped");
   }, 
-  flipTimeout);
+  hold);
 }
 
+// reseting: by clicking close and clicking play. Once the game is restarted, images are assigned randomly and all cards will be face-down
+var flipCardElements = document.querySelectorAll(".flip-card");
 function reset(sides, flipCardElements) {
   assignSides(sides);
-  matchedCards = [];
   flipCardElements.forEach(function(card) {
     card.classList.remove("flipped");
   });
 }
 
+var matchCountDisplay = document.querySelector("#match-count");
+var matchCounter = 0;                                           // both of these variables are for scoring
+// assignSides function called
 assignSides(sides);
+var canvas = document.querySelector("#canvas");   // interactive area
 canvas.addEventListener("click", function(event) {
   if (event.target.classList.contains("flip-card-front")) {
     var card = event.target.closest(".flip-card");
-    if (unFlipped(card)) {
+    if (unflipped(card)) {
       card.classList.add("flipped");
       flippedCards.push(card);
     }
-    if (flippedCards.length === 2) {
+    if (flippedCards.length == 2) {
       if (areMatching(flippedCards)) {
         matchCountDisplay.textContent = ++matchCounter;
-        matchedCards.push(...flippedCards);
       } else {
         hideCards(flippedCards);
       }
@@ -344,24 +326,25 @@ canvas.addEventListener("click", function(event) {
   }
 });
 
-function createProgressbar(id, duration, callback) {
-  var progbar = document.getElementById(id);
-  progbar.className = 'progressbar';
-  var progbarinner = document.createElement('div');
-  progbarinner.className = 'inner';
-  progbarinner.style.animationDuration = duration;
+function initTimer(id, duration, callback) {
+  var t = document.getElementById(id);
+  t.className = 'timer';
+  var tInner = document.createElement('div');
+  tInner.className = 'inner';
+  tInner.style.animationDuration = duration;
   if (typeof(callback) === 'function')
-    progbarinner.addEventListener('animationend', callback);
-    progbar.appendChild(progbarinner);
-  progbarinner.style.animationPlayState = 'running';
+    tInner.addEventListener('animationend', callback);
+    t.appendChild(tInner);
+    tInner.style.animationPlayState = 'running';
 }
 
-addEventListener('load', () => createProgressbar('progressbar', '15s', () => {
+addEventListener('load', () => initTimer('timer', '15s', () => {
   var scrnfreeze = document.getElementById("game-container");
   scrnfreeze.classList.add("frozen");
   document.getElementById("popup-image").style.display = "block";
 }));
 
+var replay = document.querySelector("#close-game");
 replay.addEventListener("click", function() {
   var scrnfreeze = document.getElementById("game-container");
   reset(sides, flipCardElements);
