@@ -231,7 +231,7 @@ function assignSides(sides) {
   // each image is listed twice since there are 16 cards
   var url = "{{site.baseurl}}/images/";   // for max efficiency
   // CITATION: all of the following images are from the website Font Awesome
-  var possibleSides = [
+  var randImages = [
                         url + "bug.png",
                         url + "bug.png", 
                         url + "c.png",
@@ -250,20 +250,20 @@ function assignSides(sides) {
                         url + "sc.png"
                       ];
 
-  var sidesPostReplay = possibleSides.slice();
+  var imagesPostReplay = randImages.slice();
   
   for (var i = 0; i < 16; i++) {
-    var randomIndex = Math.floor(Math.random() * possibleSides.length);
-    var side = possibleSides[randomIndex];
+    var randomIndex = Math.floor(Math.random() * randImages.length);
+    var side = randImages[randomIndex];
     // each image is randomly selected and returned while also being deleted from the list 
-    possibleSides.splice(randomIndex, 1);
+    randImages.splice(randomIndex, 1);
     sides[i].innerHTML = '<img src="' + side + '">';
   }
 
   if (typeof assignSides.initialized == 'undefined') {
     assignSides.initialized = true;
-    // since the reset function relies on possibleSides being repeated, it is more efficient to make a copy of the list instead
-    possibleSides = sidesPostReplay;  // sidesPostReplay = copy of possibleSides
+    // since the reset function relies on randImages being repeated, it is more efficient to make a copy of the list instead
+    randImages = imagesPostReplay;  
   }
 }
 
