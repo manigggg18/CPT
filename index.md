@@ -187,7 +187,7 @@ img {
 
 <div class="greet-container">
   <h2>Welcome To Code-Crunch!</h2>
-  <blockquote id = "greet-text">First timer? Don't worry! You'll get the hang of it!</blockquote>
+  <blockquote id = "greet-text">First timer? Don't worry! You'll get the hang of it. Click the Play button, and try to match as many cards as possible in under 25 seconds. Each matched pair is 1 point. Your score is displayed on the blue box. Be careful, the timer isn't really fair!</blockquote>
 </div>
 <br>
 <div class="play-container">
@@ -216,10 +216,11 @@ img {
   <br>
 </div>
 <script>
-const gameDiv = document.getElementById('game');
+var gameDiv = document.getElementById('game');
 
+// for loop: creating 16 cards each with a unique id
 for (let i = 1; i <= 16; i++) {
-  const flipCardDiv = document.createElement('div');
+  var flipCardDiv = document.createElement('div');
   flipCardDiv.id = 'flip-card-' + i;
   flipCardDiv.classList.add('flip-card');
   flipCardDiv.innerHTML = `
@@ -229,38 +230,20 @@ for (let i = 1; i <= 16; i++) {
   gameDiv.appendChild(flipCardDiv);
 }
 
-var playbutton = document.getElementById("play-button");
-var closegame = document.getElementById("close-game");
-var playButton = document.querySelector("#play-button");
 var canvas = document.querySelector("#canvas");
 var flipCardElements = document.querySelectorAll(".flip-card");
-var cardSides = document.querySelectorAll(".flip-card .flip-card-back");
+var sides = document.querySelectorAll(".flip-card .flip-card-back");
 var replay = document.querySelector("#close-game");
 var matchCountDisplay = document.querySelector("#match-count");
 var matchCounter = 0;
 var totalCards = flipCardElements.length;
-var flippedCards = [];
 var matchedCards = [];
-var locked = false;
-var flipTimeout = 700;
 var url = "{{site.baseurl}}/images/";
-var possibleCardSides = [url + "bug.png", 
-                        url + "c.png", 
-                        url + "ch.png", 
-                        url + "d.png", 
-                        url + "e.png", 
-                        url + "g.png", 
-                        url + "s.png", 
-                        url + "sc.png", 
-                        url + "bug.png", 
-                        url + "c.png", 
-                        url + "ch.png", 
-                        url + "d.png", 
-                        url + "e.png", 
-                        url + "g.png", 
-                        url + "s.png", 
-                        url + "sc.png"];
 
+// onevent click listeners for play button and close button (closing and starting the game restarts the game including score and timer)
+var playbutton = document.getElementById("play-button");
+var closegame = document.getElementById("close-game");
+var playButton = document.querySelector("#play-button");
 playbutton.onclick = function() {
   document.getElementById("game-container").style.display = "block";
   document.getElementById("timer-container").style.display = "block";
@@ -273,73 +256,77 @@ closegame.onclick = function() {
   document.getElementById("play-button").style.display = "block";
   document.getElementById("close-game").style.display = "none";
 }
-                        
+playButton.addEventListener("click", function() {
+  canvas.classList.remove("hidden");
+});
+
+
 function getRandomIndex(length) {
   return Math.floor(Math.random() * length);
 }
 
+var possibleSides = [
+                      url + "bug.png",
+                      url + "bug.png", 
+                      url + "c.png",
+                      url + "c.png",  
+                      url + "ch.png", 
+                      url + "ch.png", 
+                      url + "d.png", 
+                      url + "d.png",
+                      url + "e.png", 
+                      url + "e.png",
+                      url + "g.png",
+                      url + "g.png",  
+                      url + "s.png", 
+                      url + "s.png", 
+                      url + "sc.png",   
+                      url + "sc.png"];
+
 function getRandomSide(randomIndex) {
-  var side;
-  randomIndex = getRandomIndex(possibleCardSides.length);
-  side = possibleCardSides[randomIndex];
-  possibleCardSides.splice(randomIndex, 1);
+  randomIndex = getRandomIndex(possibleSides.length);
+  var side = possibleSides[randomIndex];
+  possibleSides.splice(randomIndex, 1);
   return side;
 }
 
-function assignCardSides(cardSides) {
+function assignSides(sides) {
+  var sidesPostReplay = possibleSides.slice();  // since the reset function relies on possibleSides being repeated, it is more efficient to make a copy of the list instead
   for (var i = 0; i < 16; i++) {
-    cardSides[i].innerHTML = '<img src="' + getRandomSide() + '">';
+    sides[i].innerHTML = '<img src="' + getRandomSide() + '">';
   }
-  possibleCardSides = [url + "bug.png", 
-                      url + "c.png", 
-                      url + "ch.png", 
-                      url + "d.png", 
-                      url + "e.png", 
-                      url + "g.png", 
-                      url + "s.png", 
-                      url + "sc.png", 
-                      url + "bug.png", 
-                      url + "c.png", 
-                      url + "ch.png", 
-                      url + "d.png", 
-                      url + "e.png", 
-                      url + "g.png", 
-                      url + "s.png", 
-                      url + "sc.png"];
+  possibleSides = sidesPostReplay;
 }
 
 function unFlipped(card) {
   return !card.classList.contains("flipped");
 }
 
+var flippedCards = [];
 function areMatching(flippedCards) {
-  return (flippedCards[0].innerHTML === flippedCards[1].innerHTML);
+  return (flippedCards[0].innerHTML == flippedCards[1].innerHTML);
 }
 
+var flipTimeout = 800;
 function hideCards(flippedCards) {
   setTimeout(function() {
     flippedCards[0].classList.remove("flipped");
     flippedCards[1].classList.remove("flipped");
-    locked = false;
-  }, flipTimeout);
+  }, 
+  flipTimeout);
 }
 
-function reset(cardSides, flipCardElements) {
-  assignCardSides(cardSides);
+function reset(sides, flipCardElements) {
+  assignSides(sides);
   matchedCards = [];
   flipCardElements.forEach(function(card) {
     card.classList.remove("flipped");
   });
 }
 
-assignCardSides(cardSides);
-
-playButton.addEventListener("click", function() {
-  canvas.classList.remove("hidden");
-});
-
+assignSides(sides);
 canvas.addEventListener("click", function(event) {
-  if (event.target.classList.contains("flip-card-front") && !locked) {
+  if (event.target.classList.contains("flip-card-front")) {
     var card = event.target.closest(".flip-card");
     if (unFlipped(card)) {
       card.classList.add("flipped");
@@ -350,7 +337,6 @@ canvas.addEventListener("click", function(event) {
         matchCountDisplay.textContent = ++matchCounter;
         matchedCards.push(...flippedCards);
       } else {
-        locked = true;
         hideCards(flippedCards);
       }
       flippedCards = [];
@@ -359,29 +345,29 @@ canvas.addEventListener("click", function(event) {
 });
 
 function createProgressbar(id, duration, callback) {
-  const pb = document.getElementById(id);
-  pb.className = 'progressbar';
-  const pbi = document.createElement('div');
-  pbi.className = 'inner';
-  pbi.style.animationDuration = duration;
+  var progbar = document.getElementById(id);
+  progbar.className = 'progressbar';
+  var progbarinner = document.createElement('div');
+  progbarinner.className = 'inner';
+  progbarinner.style.animationDuration = duration;
   if (typeof(callback) === 'function')
-    pbi.addEventListener('animationend', callback);
-  pb.appendChild(pbi);
-  pbi.style.animationPlayState = 'running';
+    progbarinner.addEventListener('animationend', callback);
+    progbar.appendChild(progbarinner);
+  progbarinner.style.animationPlayState = 'running';
 }
 
 addEventListener('load', () => createProgressbar('progressbar', '15s', () => {
-  const c = document.getElementById("game-container");
-  c.classList.add("frozen");
+  var scrnfreeze = document.getElementById("game-container");
+  scrnfreeze.classList.add("frozen");
   document.getElementById("popup-image").style.display = "block";
 }));
 
 replay.addEventListener("click", function() {
-  const c = document.getElementById("game-container");
-  reset(cardSides, flipCardElements);
+  var scrnfreeze = document.getElementById("game-container");
+  reset(sides, flipCardElements);
   matchCounter = 0;
   matchCountDisplay.textContent = matchCounter;
-  c.classList.remove("frozen");
+  scrnfreeze.classList.remove("frozen");
   document.getElementById("popup-image").style.display = "none";
 });
 </script>
